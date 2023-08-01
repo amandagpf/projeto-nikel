@@ -81,12 +81,27 @@ function getTransactions() {
                     <td>R$ ${item.value.toFixed(2)}</td>
                     <td>${type}</td>
                     <td>${item.description}</td>
+                    <td><button type="button" class="delete-button"><ion-icon name="trash-outline"></ion-icon></button></td>
                 </tr>
             `
         })
     }
 
     document.querySelector("#transactions-list").innerHTML = transactionsHtml;
+
+    const deleteButtons = document.querySelectorAll(".delete-button");
+    deleteButtons.forEach(button => {
+        button.addEventListener("click", function () {
+
+            let resposta = window.confirm("Você deseja excluir o item da lista?")
+                if(resposta){
+                    const index = this.getAttribute("data-index");
+                    data.transactions.splice(index, 1);
+                    saveData(data);
+                    getTransactions();
+                }
+        });
+    });
 }
 
 function saveData(data){
